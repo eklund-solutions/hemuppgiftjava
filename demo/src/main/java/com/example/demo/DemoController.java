@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +31,11 @@ public class DemoController {
 	private PlayerRepository playerRepository;
 
     
-    // Hämta alla spelare
+    // Hämta alla spelare    
+    // Tillåt cross origin anrop
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping(path = "/player")
+    @CrossOrigin()
     List<Player> getAll() {
         var l = new ArrayList<Player>();
         for(Player r : playerRepository.findAll())
@@ -47,6 +50,7 @@ public class DemoController {
     // Hämta en spelare
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping(path = "/player/{id}")
+    @CrossOrigin()
     Player getSingle(@PathVariable Integer id) {
         // Kontrollera om spelaren finns
         if( playerRepository.existsById(id) ) {
@@ -59,6 +63,7 @@ public class DemoController {
     // Lägg till spelare (POST). Förväntar oss JSON (definierad som)
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping(path = "/player", consumes="application/json", produces="application/json")
+    @CrossOrigin()
     ResponseEntity<Object> add(@RequestBody Player p) {
         playerRepository.save(p);
 
@@ -74,6 +79,7 @@ public class DemoController {
     // Uppdatera spelare (PUT)
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @PutMapping(path = "/player/{id}", consumes="application/json", produces="application/json")
+    @CrossOrigin()
     Player update(@PathVariable Integer id, @RequestBody Player updatedPlayer) {
         Player dbPlayer = playerRepository.findById(id).get();        
         dbPlayer.setName(updatedPlayer.getName());
@@ -87,6 +93,7 @@ public class DemoController {
     // Ta bort spelare
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @DeleteMapping(path = "/player/{id}")
+    @CrossOrigin()
     boolean deletePost(@PathVariable Integer id) {
         boolean status = false;
         // Kontrollera om spelaren finns
